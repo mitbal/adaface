@@ -7,20 +7,20 @@ function [ A ] = ComputeBoxSum( ii_im, x, y, w, h )
     areaA = 0;
     areaB = 0;
     areaC = 0;
-    areaD = ii_im(x-1+w, y-1+h);
+    areaD = ii_im(y-1+h, x-1+w);
     
     % Check boundary condition because of indexing mishaps
     if x-1 > 0 && y-1 > 0
-       areaA = ii_im(x-1, y-1);
-    end
-    if x-1 > 0
-       areaC = ii_im(x-1, y-1+h); 
+       areaA = ii_im(y-1, x-1);
     end
     if y-1 > 0
-       areaB = ii_im(x-1+w, y-1); 
+       areaB = ii_im(y-1, x-1+w); 
+    end
+    if x-1 > 0
+       areaC = ii_im(y-1+h, x-1); 
     end
     
-    A = areaD + areaA - areaC - areaB;
+    A = areaD + areaA - areaB - areaC;
     
 end
 
