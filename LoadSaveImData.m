@@ -13,7 +13,7 @@ function LoadSaveImData( dirname, ni, im_sfn )
     for ii = 1:ni
         im_fname = [dirname, '/', face_fnames(fnums(ii)).name];
         [~, ii_im] = LoadIm(im_fname);
-        ii_ims(ni, :) = ii_im(:)';
+        ii_ims(ii, :) = ii_im(:)';
     end
     
     save(im_sfn, 'dirname', 'fnums', 'ii_ims');
