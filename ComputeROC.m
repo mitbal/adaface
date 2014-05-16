@@ -1,4 +1,4 @@
-function ComputeROC( Cparams, Fdata, NFdata )
+function thresh = ComputeROC( Cparams, Fdata, NFdata )
 %function ComputeROC compute the ROC curve
 
     face_fnames = dir(Fdata.dirname);
@@ -30,13 +30,13 @@ function ComputeROC( Cparams, Fdata, NFdata )
     end
     
     thresh = 0;
-    ntp = 0; nfp = 0; ntn = 0; nfn = 0;
     
-    threshold = 0:0.01:10;
+    threshold = 0:0.01:max(scores(:,1));
     fpr = zeros(size(threshold));
     tpr = zeros(size(threshold));
     
-    for tt=1:size(threshold,2)
+    for tt=1:length(threshold)
+        ntp = 0; nfp = 0; ntn = 0; nfn = 0;
         predicted_class = scores(:, 1) >= threshold(tt);
         for ii=1:size(predicted_class, 1)
             if predicted_class(ii) == 1 && scores(ii, 2) == 1
@@ -58,8 +58,7 @@ function ComputeROC( Cparams, Fdata, NFdata )
         end
     end
     
-    plot(fpr, tpr, 'r-'); axis([0 1 0 1]);
-    Cparams.thresh = thresh;
+    figure; plot(fpr, tpr, 'r-');
 
 end
 
