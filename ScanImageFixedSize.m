@@ -17,9 +17,9 @@ function [ dets ] = ScanImageFixedSize( Cparams, im )
         for jj=1:size(im, 2)-L
             mu = ComputeBoxSum(ii_im, jj, ii, L, L) / (L*L);
             sig = sqrt( double( (ComputeBoxSum(ii_sqim, jj, ii, L, L)-L*L*mu*mu) / (L*L-1) ) );
-            sct = ApplyDetector2(Cparams, ii_im, jj, ii, L, L, mu, sig);
+            sct = ApplyDetector2(Cparams, ii_im(ii:ii+L-1, jj:jj+L-1), mu, sig);
             sc = [sc; sct];
-            if sct >= 5.6 %Cparams.thresh
+            if sct >= Cparams.thresh
                 dets = [dets; jj, ii, L, L];
             end
         end
