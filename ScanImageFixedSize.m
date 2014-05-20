@@ -10,20 +10,22 @@ function [ dets ] = ScanImageFixedSize( Cparams, im )
     ii_sqim = cumsum(cumsum(im.*im, 1), 2);
     
     L = 19;
-    dets = [];
-    sc = [];
+    [H, W] = size(im);
+    dets = zeros((H-L)*(W-L), 4);
+    index = 1;
     % Loop for every possible position of face
-    for ii=1:size(im, 1)-L
-        for jj=1:size(im, 2)-L
+    for ii=1:H-L
+        for jj=1:W-L
             mu = ComputeBoxSum(ii_im, jj, ii, L, L) / (L*L);
             sig = sqrt( double( (ComputeBoxSum(ii_sqim, jj, ii, L, L)-L*L*mu*mu) / (L*L-1) ) );
             sct = ApplyDetector2(Cparams, ii_im(ii:ii+L-1, jj:jj+L-1), mu, sig);
-            sc = [sc; sct];
             if sct >= Cparams.thresh
-                dets = [dets; jj, ii, L, L];
+                dets(index, :) = [jj, ii, L, L];
+                index = index + 1;
             end
         end
     end
+    dets = dets(1:index-1, :);
 
 end
 
