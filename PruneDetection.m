@@ -5,12 +5,12 @@ function fdets = PruneDetection( dets )
     D = zeros(nd, nd);
     
     rho = 0.75;
-    w = dets(1, 3);
-    h = dets(1, 4);
     
     % Check for intersection
     for ii=1:nd
         for jj=1:nd
+            w = dets(ii, 3);
+            h = dets(jj, 4);
             intersect = rectint(dets(ii,:), dets(jj,:));
             exclusive = (w*h + w*h - intersect);
             if intersect / exclusive > rho
